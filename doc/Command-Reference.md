@@ -1695,7 +1695,7 @@ This command displays the global configuration fields and the list of all tacacs
   TACPLUS_SERVER address 10.11.12.14
                          priority 9
                          tcp_port 50
-                         auth_type mschap
+                         auth_type pap
                          timeout 10
                          passkey testing789
 
@@ -1732,7 +1732,7 @@ When this command is executed, the configured tacacs+ server addresses are updat
     - ip_address: TACACS+ server IP address.
     - timeout: Transmission timeout interval in seconds, range 1 to 60, default 5
     - key: Shared secret
-    - type: Authentication type, "chap" or "pap" or "mschap" or "login", default is "pap".
+    - type: Authentication type, "chap" or "pap" or "login", default is "pap".
     - port: TCP port range is 1 to 65535, default 49
     - pri: Priority, priority range 1 to 64, default 1.
     - use-mgmt-vrf: This means that the server is part of Management vrf, default is "no vrf"
@@ -1740,17 +1740,17 @@ When this command is executed, the configured tacacs+ server addresses are updat
 
 - Example:
   ```
-  admin@sonic:~$ sudo config tacacs add 10.11.12.13 -t 10 -k testing789 -a mschap -o 50 -p 9
+  admin@sonic:~$ sudo config tacacs add 10.11.12.13 -t 10 -k testing789 -a pap -o 50 -p 9
   ```
 
   - Example Server Configuration in /etc/pam.d/common-auth-sonic configuration file:
     ```
-    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.11.12.14:50 secret=testing789 login=mschap timeout=10  try_first_pass
-    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.11.12.24:50 secret=testing789 login=mschap timeout=987654321098765433211
+    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.11.12.14:50 secret=testing789 login=pap timeout=10  try_first_pass
+    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.11.12.24:50 secret=testing789 login=pap timeout=987654321098765433211
     0987  try_first_pass
-    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.0.0.9:49 secret= login=mschap timeout=5  try_first_pass
-    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.0.0.8:49 secret= login=mschap timeout=5  try_first_pass
-    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.11.12.13:50 secret=testing789 login=mschap timeout=10  try_first_pass
+    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.0.0.9:49 secret= login=pap timeout=5  try_first_pass
+    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.0.0.8:49 secret= login=pap timeout=5  try_first_pass
+    auth    [success=done new_authtok_reqd=done default=ignore]     pam_tacplus.so server=10.11.12.13:50 secret=testing789 login=pap timeout=10  try_first_pass
     auth    [success=1 default=ignore]      pam_unix.so nullok try_first_pass
     ```
 
@@ -1777,12 +1777,12 @@ When user has not configured server specific authtype, this global value shall b
 
 - Usage:
   ```
-  config tacacs authtype (chap | pap | mschap | login)
+  config tacacs authtype (chap | pap | login)
   ```
 
 - Example:
   ```
-  admin@sonic:~$ sudo config tacacs authtype mschap
+  admin@sonic:~$ sudo config tacacs authtype pap
   ```
 
 **config tacacs default**
